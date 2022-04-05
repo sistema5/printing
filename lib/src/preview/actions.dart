@@ -259,7 +259,7 @@ class PdfPageFormatAction extends StatelessWidget {
     final keys = _pageFormats.keys.toList()..sort();
 
     return DropdownButton<PdfPageFormat>(
-      dropdownColor: theme.primaryColor,
+      dropdownColor: const Color(0xffFF792C),
       icon: Icon(
         Icons.arrow_drop_down,
         color: iconColor,

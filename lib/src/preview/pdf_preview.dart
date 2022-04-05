@@ -64,8 +64,8 @@ class PdfPreview extends StatefulWidget {
   }) : super(key: key);
 
   static const _defaultPageFormats = <String, PdfPageFormat>{
-    'A4': PdfPageFormat.a4,
-    'Letter': PdfPageFormat.letter,
+    'Oficio': PdfPageFormat.a4,
+    'Carta': PdfPageFormat.letter,
   };
 
   /// Called when a pdf document is needed
@@ -342,7 +342,7 @@ class _PdfPreviewState extends State<PdfPreview> {
               ),
               child: Material(
                 elevation: 4,
-                color: theme.primaryColor,
+                color: const Color(0xffFF792C),
                 child: SizedBox(
                   width: double.infinity,
                   child: SafeArea(
