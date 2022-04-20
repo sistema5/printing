@@ -8,12 +8,12 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 Future<void> main() async {
-  runApp(const MyApp('Printing Demo'));
+  runApp(MyApp('Printing Demo'));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp(this.title, {Key? key}) : super(key: key);
-
+  MyApp(this.title, {Key? key}) : super(key: key);
+  final ActionsController actionsController = ActionsController();
   final String title;
 
   @override
@@ -21,8 +21,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(title: Text(title)),
-        body: PdfPreview(
-          build: (format) => _generatePdf(format, title),
+        body: Stack(
+          children: [
+            PdfPreview(
+              withOptions: false,
+              controller: actionsController,
+              build: (format) => _generatePdf(format, title),
+            ),
+            ElevatedButton(onPressed: ()=> actionsController.print(), child: const Text("Prueba"))
+          ],
         ),
       ),
     );

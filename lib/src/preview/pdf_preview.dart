@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -60,7 +62,9 @@ class PdfPreview extends StatefulWidget {
     this.shouldRepaint = false,
     this.loadingWidget,
     this.onPageFormatChanged,
-    this.dpi, this.controller,
+    this.withOptions = true,
+    this.dpi,
+    required this.controller,
   }) : super(key: key);
 
   static const _defaultPageFormats = <String, PdfPageFormat>{
@@ -68,7 +72,9 @@ class PdfPreview extends StatefulWidget {
     'Carta': PdfPageFormat.letter,
   };
 
-  final ActionsController? controller;
+  final bool withOptions;
+
+  final ActionsController controller;
 
   /// Called when a pdf document is needed
   final LayoutCallback build;
@@ -196,7 +202,8 @@ class _PdfPreviewState extends State<PdfPreview> {
 
   @override
   void initState() {
-    widget.controller?.onPrint = widget.onPrinted;
+    log("Entre prueba");
+    widget.controller.onPrint = printPDF;
     previewData = PdfPreviewData(
       buildDocument: widget.build,
       pageFormats: widget.pageFormats.isNotEmpty
@@ -338,7 +345,7 @@ class _PdfPreviewState extends State<PdfPreview> {
               );
             }),
           ),
-          if (actions.isNotEmpty && widget.useActions)
+          if (actions.isNotEmpty && widget.useActions && widget.withOptions)
             IconTheme.merge(
               data: IconThemeData(
                 color: iconColor,
@@ -361,19 +368,27 @@ class _PdfPreviewState extends State<PdfPreview> {
       ),
     );
   }
+
+  Future<bool>? printPDF() async {
+    return await Printing.layoutPdf(
+      onLayout: widget.build,
+      name: widget.pdfFileName ?? 'Document',
+      // format: widget.initialPageFormat!,
+      dynamicLayout: widget.dynamicLayout,
+      usePrinterSettings: false,
+    );
+  }
 }
 
-class ActionsController{
-
+class ActionsController {
   ActionsController();
-
   Function? _print;
 
-  set onPrint(Function? print){
+  set onPrint(Function print) {
     _print = print;
   }
 
-  void print(){
-    _print?.call();
+  Future<bool?>? print() async {
+    return await _print!.call();
   }
 }
