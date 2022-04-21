@@ -202,7 +202,6 @@ class _PdfPreviewState extends State<PdfPreview> {
 
   @override
   void initState() {
-    log("Entre prueba");
     widget.controller.onPrint = printPDF;
     previewData = PdfPreviewData(
       buildDocument: widget.build,
