@@ -372,7 +372,7 @@ class _PdfPreviewState extends State<PdfPreview> {
     return await Printing.layoutPdf(
       onLayout: widget.build,
       name: widget.pdfFileName ?? 'Document',
-      // format: widget.initialPageFormat!,
+      format: PdfPageFormat.letter,
       dynamicLayout: widget.dynamicLayout,
       usePrinterSettings: false,
     );
